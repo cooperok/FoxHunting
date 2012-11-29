@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Охота на лис</string>
+    
+    <!--  Кнопки -->
+    <string name="button_new">Новая игра</string>
+    <string name="button_records">Рекорды</string>
+    <string name="button_settings">Настройки</string>
+    <string name="button_about">Об игре</string>
+    
+
+</resources>

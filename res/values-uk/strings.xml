@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Полювання на лисиць</string>
+    
+    <!--  Кнопки -->
+    <string name="button_new">Нова гра</string>
+    <string name="button_records">Рекорди</string>
+    <string name="button_settings">Налаштування</string>
+    <string name="button_about">Про гру</string>
+    
+
+</resources>
