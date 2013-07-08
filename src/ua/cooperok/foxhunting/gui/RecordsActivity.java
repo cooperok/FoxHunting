@@ -28,24 +28,14 @@ public class RecordsActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		
 		db_adapter = new FoxhuntingDatabase(getApplicationContext());
-		
+
 		records = getRecords();
 		
 		initListAdapter();
-        
+		
         ListView lv = getListView();
         
         lv.setTextFilterEnabled(true);
-        
-        lv.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                int position, long id) {
-              // When clicked, show a toast with the TextView text
-              Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
-                  Toast.LENGTH_SHORT).show();
-            }
-
-          });
 		
 		setContentView(R.layout.records_layout);
 	
