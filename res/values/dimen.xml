@@ -4,5 +4,14 @@
     <dimen name="main_button_width">100dp</dimen>
     <dimen name="main_button_margin_bottom">20dp</dimen>
     
+    <!-- Game -->
+    <dimen name="game_layout_padding_top">10dp</dimen>
+    <dimen name="game_layout_padding_horizontal">40dp</dimen>
+    <dimen name="game_score_layout_padding_horizontal">20dp</dimen>
+    <dimen name="game_field_layout_margin_top">10dp</dimen>
+    
+    <dimen name="game_field_cell_vertical_padding">2dp</dimen>
+    <dimen name="game_field_cell_horizontal_padding">2dp</dimen>
+    
 
 </resources>

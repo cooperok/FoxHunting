@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/game_layout"
-	    android:orientation="vertical"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/game_layout_padding_horizontal"
+    android:paddingRight="@dimen/game_layout_padding_horizontal"
+    android:paddingTop="@dimen/game_layout_padding_top" >
 
-		<ua.cooperok.foxhunting.gui.GameView
-			android:id="@+id/game_field"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:keepScreenOn="true"
-		     />
-		
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/game_score_layout_padding_horizontal"
+        android:paddingRight="@dimen/game_score_layout_padding_horizontal" >
+
+        <TextView
+            android:id="@+id/steps_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="41"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/foxes_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="10"
+            android:textSize="21sp" />
+    </RelativeLayout>
+
+    <ua.cooperok.foxhunting.gui.views.GameFieldView
+        android:id="@+id/game_field"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/game_field_layout_margin_top" />
+
+</LinearLayout>
