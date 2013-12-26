@@ -1,9 +1,11 @@
 package ua.cooperok.foxhunting.game;
 
 import android.graphics.Point;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
-public class FieldsCollection {
+public class FieldsCollection implements Parcelable {
 
     private final static String TAG = "FieldsCollection";
 
@@ -33,14 +35,42 @@ public class FieldsCollection {
         placeFoxesOnField();
     }
 
+    public FieldsCollection(Parcel in) {
+        mWidth = in.readInt();
+        mHeight = in.readInt();
+        mFoxesCount = in.readInt();
+
+        in.readIntArray(mFoxesPositions);
+        
+        try {
+            Parcelable[] fields = in.readParcelableArray(Field.class.getClassLoader());
+            mFields = new Field[mHeight][mWidth];
+            for (int i = 0, x = 0, y = 0, l = fields.length; i < l; ++i) {
+                if (i % mHeight == 0) {
+                    ++x;
+                    y = 0;
+                }
+                mFields[x][y++] = (Field) fields[i];
+            }
+        } catch (ClassCastException e) {
+            //Something went wrong wile trying to create Field object from Parcel 
+            Log.e(TAG, e.getMessage());
+            mFields = createEmptyCollection();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            //Size of saved fields doesn't match 
+            Log.e(TAG, e.getMessage());
+            mFields = createEmptyCollection();
+        }
+    }
+
     /**
      * Creates collections of empty fields, without placing foxes on them
      */
     private Field[][] createEmptyCollection() {
-        Field[][] emptyCells = new Field[getWidth()][getHeight()];
-        for (int x = 0; x < getHeight(); x++) {
-            for (int y = 0; y < getWidth(); y++) {
-                emptyCells[x][y] = new Field(x, y);
+        Field[][] emptyCells = new Field[mHeight][mWidth];
+        for (int col = 0; col < getHeight(); col++) {
+            for (int row = 0; row < getWidth(); row++) {
+                emptyCells[col][row] = new Field(row, col);
             }
         }
         return emptyCells;
@@ -98,7 +128,7 @@ public class FieldsCollection {
     public Field getField(int x, int y) {
         Field field = null;
         try {
-            field = mFields[x][y];
+            field = mFields[y][x];
         } catch (ArrayIndexOutOfBoundsException e) {
             Log.i(TAG, "Trying to get field with wrong coordinates (" + x + "," + y + ")");
         }
@@ -199,5 +229,40 @@ public class FieldsCollection {
     public int getFoxesCount() {
         return mFoxesCount;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        
+        dest.writeInt(mWidth);
+        dest.writeInt(mHeight);
+        dest.writeInt(mFoxesCount);
+
+        dest.writeIntArray(mFoxesPositions);
+        
+        //Making flatten array fields
+        Parcelable [] fields = new Parcelable [mWidth*mHeight];
+        for (int x = 0, i = 0; x < mHeight; x++) {
+            for (int y = 0; y < mWidth; y++) {
+                fields[i++] = mFields[x][y];
+            }
+        }
+        dest.writeParcelableArray(fields, 0);
+       
+    }
+
+    public static final Parcelable.Creator<FieldsCollection> CREATOR = new Parcelable.Creator<FieldsCollection>() {
+        public FieldsCollection createFromParcel(Parcel in) {
+            return new FieldsCollection(in);
+        }
+
+        public FieldsCollection[] newArray(int size) {
+            return new FieldsCollection[size];
+        }
+    };
 
 }

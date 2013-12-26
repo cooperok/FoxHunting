@@ -4,8 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -55,7 +56,6 @@ public class GameFieldView extends View {
     }
 
     private void init() {
-        mFields = new FieldsCollection();
         mDefaultCellColor = new Paint();
         mDefaultCellColor.setColor(Color.WHITE);
         mTouchedCellColor = new Paint();
@@ -66,7 +66,10 @@ public class GameFieldView extends View {
         mCellTextValueColor.setColor(Color.BLACK);
         mCellVerticalPadding = getResources().getDimensionPixelOffset(R.dimen.game_field_cell_vertical_padding);
         mCellHorizontalPadding = getResources().getDimensionPixelOffset(R.dimen.game_field_cell_horizontal_padding);
-        Log.i("test", "WAT?");
+    }
+
+    public void initGameField() {
+        mFields = new FieldsCollection();
     }
 
     @Override
@@ -89,8 +92,8 @@ public class GameFieldView extends View {
         for (int row = 0; row < mFields.getWidth(); row++) {
             for (int col = 0; col < mFields.getHeight(); col++) {
                 Field field = mFields.getField(row, col);
-                cellLeft = (col * mCellWidth);
-                cellTop = (row * mCellHeight);
+                cellLeft = (row * mCellWidth);
+                cellTop = (col * mCellHeight);
 
                 // If field was scanned draw cell, depends on whether contains it fox or no
                 if (field.isScanned()) {
@@ -136,11 +139,12 @@ public class GameFieldView extends View {
 
         // Drawing cell as touched only if it wasn't scanned before
         if (mTouchedField != null && !mTouchedField.isScanned()) {
+            Point position = mTouchedField.getPosition();
             canvas.drawRect(
-                            mTouchedField.getPosition().y * mCellWidth,
-                            mTouchedField.getPosition().x * mCellHeight,
-                            (mTouchedField.getPosition().y * mCellWidth) + mCellWidth - mCellHorizontalPadding,
-                            (mTouchedField.getPosition().x * mCellHeight) + mCellHeight - mCellVerticalPadding,
+                            position.x * mCellWidth,
+                            position.y * mCellHeight,
+                            (position.x * mCellWidth) + mCellWidth - mCellHorizontalPadding,
+                            (position.y * mCellHeight) + mCellHeight - mCellVerticalPadding,
                             mTouchedCellColor
                   );
         }
@@ -161,12 +165,14 @@ public class GameFieldView extends View {
         case MotionEvent.ACTION_UP:
             mSelectedField = getFieldAtPoint(x, y);
 
-            if (!mTouchedField.equals(mSelectedField)) {
-                mSelectedField = null;
-            } else if (!mSelectedField.isScanned()) {
-                mFields.calculateFieldValue(mSelectedField);
-                mSelectedField.setScanned();
-                dispatchStepDone();
+            if (mTouchedField != null) {
+                if (!mTouchedField.equals(mSelectedField)) {
+                    mSelectedField = null;
+                } else if (!mSelectedField.isScanned()) {
+                    mFields.calculateFieldValue(mSelectedField);
+                    mSelectedField.setScanned();
+                    dispatchStepDone();
+                }
             }
 
             mTouchedField = null;
@@ -190,8 +196,8 @@ public class GameFieldView extends View {
      * @return
      */
     private Field getFieldAtPoint(int x, int y) {
-        int col = (int) ((x - getPaddingLeft()) / mCellWidth);
-        int row = (int) ((y - getPaddingTop()) / mCellHeight);
+        int row = (int) ((x - getPaddingLeft()) / mCellWidth);
+        int col = (int) ((y - getPaddingTop()) / mCellHeight);
         return mFields.getField(row, col);
     }
 
@@ -217,7 +223,15 @@ public class GameFieldView extends View {
             mOnStepListener.onStep();
         }
     }
-    
+
+    public Parcelable getParcelable() {
+        return mFields;
+    }
+
+    public void setParcelable(Parcelable parcelableFields) {
+        mFields = (FieldsCollection) parcelableFields;
+    }
+
     /**
      * Interface declares methods which must react on every new step on game field
      * 
