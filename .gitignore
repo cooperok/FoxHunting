@@ -29,7 +29,8 @@ proguard/
 *.ipr
 *.iws
 .idea/
-*.gradle
+.gradle/
+build/
 
 ### ECLIPSE  https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
 
