@@ -80,6 +80,8 @@ public class GameFieldView extends View {
         mCellWidth = (widthSize - getPaddingLeft() - getPaddingRight()) / mFields.getWidth();
         mCellHeight = (heightSize - getPaddingLeft() - getPaddingRight()) / mFields.getHeight();
 
+        mCellWidth = mCellHeight = Math.min(mCellWidth, mCellHeight);
+        
         setMeasuredDimension(widthSize, heightSize);
     }
 
@@ -172,6 +174,9 @@ public class GameFieldView extends View {
                     mFields.calculateFieldValue(mSelectedField);
                     mSelectedField.setScanned();
                     dispatchStepDone();
+                    if (mSelectedField.isContainsFox()) {
+                        dispatchFoxFound();
+                    }
                 }
             }
 
@@ -223,6 +228,12 @@ public class GameFieldView extends View {
             mOnStepListener.onStep();
         }
     }
+    
+    public void dispatchFoxFound() {
+        if (mOnStepListener != null) {
+            mOnStepListener.onFoxFound();
+        }
+    }
 
     public Parcelable getParcelable() {
         return mFields;
@@ -240,6 +251,7 @@ public class GameFieldView extends View {
      */
     public interface OnStepListener {
         public void onStep();
+        public void onFoxFound();
     }
 
 }

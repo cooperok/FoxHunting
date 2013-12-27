@@ -81,6 +81,12 @@ public class GameActivity extends Activity {
             ++mStepsCount;
             setStepsCount();
         }
+
+        @Override
+        public void onFoxFound() {
+            --mFoxesCount;
+            setFoxesCount();
+        }
     }
 
 }
