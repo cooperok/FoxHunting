@@ -77,11 +77,22 @@ public class GameFieldView extends View {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        mCellWidth = (widthSize - getPaddingLeft() - getPaddingRight()) / mFields.getWidth();
-        mCellHeight = (heightSize - getPaddingLeft() - getPaddingRight()) / mFields.getHeight();
+        int fieldsWidth = mFields.getWidth();
+        int fieldsHeight = mFields.getHeight();
+
+        mCellWidth = (widthSize - (mCellHorizontalPadding * (fieldsWidth - 1))) / fieldsWidth;
+        mCellHeight = (heightSize - (mCellVerticalPadding * (fieldsHeight - 1))) / fieldsHeight;
 
         mCellWidth = mCellHeight = Math.min(mCellWidth, mCellHeight);
-        
+
+        float gameFieldWidth = mCellWidth * fieldsWidth + mCellHorizontalPadding * (fieldsWidth - 1);
+        float gameFieldHeight = mCellWidth * fieldsWidth + mCellHorizontalPadding * (fieldsWidth - 1);
+
+        int horizontalSpacing = (int) ((widthSize - gameFieldWidth) / 2);
+        int verticalSpacing = (int) ((heightSize - gameFieldHeight) / 2);
+
+        setPadding(horizontalSpacing, verticalSpacing, horizontalSpacing, verticalSpacing);
+
         setMeasuredDimension(widthSize, heightSize);
     }
 
@@ -90,12 +101,18 @@ public class GameFieldView extends View {
         float cellLeft;
         float cellTop;
 
+        int fieldsWidth = mFields.getWidth();
+        int fieldsHeight = mFields.getHeight();
+
+        int leftOffset = getPaddingLeft();
+        int topOffset = getPaddingTop();
+
         // Drawing cells in accordance with the size of game field
-        for (int row = 0; row < mFields.getWidth(); row++) {
-            for (int col = 0; col < mFields.getHeight(); col++) {
+        for (int row = 0; row < fieldsWidth; row++) {
+            for (int col = 0; col < fieldsHeight; col++) {
                 Field field = mFields.getField(row, col);
-                cellLeft = (row * mCellWidth);
-                cellTop = (col * mCellHeight);
+                cellLeft = leftOffset + row * mCellWidth + (row == 0 ? 0 : mCellHorizontalPadding * row);
+                cellTop = topOffset + col * mCellHeight + (col == 0 ? 0 : mCellVerticalPadding * col);
 
                 // If field was scanned draw cell, depends on whether contains it fox or no
                 if (field.isScanned()) {
@@ -103,16 +120,16 @@ public class GameFieldView extends View {
                         canvas.drawRect(
                                         cellLeft,
                                         cellTop,
-                                        cellLeft + mCellWidth - mCellHorizontalPadding,
-                                        cellTop + mCellHeight - mCellVerticalPadding,
+                                        cellLeft + mCellWidth,
+                                        cellTop + mCellHeight,
                                         mCellColorWithFox
                               );
                     } else {
                         canvas.drawRect(
                                         cellLeft,
                                         cellTop,
-                                        cellLeft + mCellWidth - mCellHorizontalPadding,
-                                        cellTop + mCellHeight - mCellVerticalPadding,
+                                        cellLeft + mCellWidth,
+                                        cellTop + mCellHeight,
                                         mDefaultCellColor
                               );
 
@@ -123,6 +140,7 @@ public class GameFieldView extends View {
                                    (mCellTextValueColor.measureText(value) / 2));
                         int yPos = (int) (cellTop + ((mCellHeight / 2) -
                                    ((mCellTextValueColor.descent() + mCellTextValueColor.ascent()) / 2)));
+                        mCellTextValueColor.setTextSize(getResources().getDimensionPixelOffset(R.dimen.game_field_value_text_size));
                         canvas.drawText(value, xPos, yPos, mCellTextValueColor);
                     }
                 } else {
@@ -131,8 +149,8 @@ public class GameFieldView extends View {
                     canvas.drawRect(
                                     cellLeft,
                                     cellTop,
-                                    cellLeft + mCellWidth - mCellHorizontalPadding,
-                                    cellTop + mCellHeight - mCellVerticalPadding,
+                                    cellLeft + mCellWidth,
+                                    cellTop + mCellHeight,
                                     mDefaultCellColor
                           );
                 }
@@ -143,10 +161,10 @@ public class GameFieldView extends View {
         if (mTouchedField != null && !mTouchedField.isScanned()) {
             Point position = mTouchedField.getPosition();
             canvas.drawRect(
-                            position.x * mCellWidth,
-                            position.y * mCellHeight,
-                            (position.x * mCellWidth) + mCellWidth - mCellHorizontalPadding,
-                            (position.y * mCellHeight) + mCellHeight - mCellVerticalPadding,
+                            leftOffset + position.x * mCellWidth + position.x * mCellHorizontalPadding,
+                            topOffset + position.y * mCellHeight + position.y * mCellVerticalPadding,
+                            leftOffset + (position.x * mCellWidth) + mCellWidth + position.x * mCellHorizontalPadding,
+                            topOffset + (position.y * mCellHeight) + mCellHeight + position.y * mCellVerticalPadding,
                             mTouchedCellColor
                   );
         }
@@ -201,9 +219,39 @@ public class GameFieldView extends View {
      * @return
      */
     private Field getFieldAtPoint(int x, int y) {
-        int row = (int) ((x - getPaddingLeft()) / mCellWidth);
-        int col = (int) ((y - getPaddingTop()) / mCellHeight);
-        return mFields.getField(row, col);
+        Field field = null;
+
+        if (x > getPaddingLeft() && y > getPaddingTop()) {
+            int left = getPaddingLeft() + (int) mCellWidth;
+            int top = getPaddingTop() + (int) mCellHeight;
+            int row = 0, col = 0, sizeX = mFields.getWidth(), sizeY = mFields.getHeight();
+
+            // Calculating x position by adding width of one cell
+            while (x > left) {
+                left += mCellHorizontalPadding + (int) mCellWidth;
+                if (row == sizeX) {
+                    row = -1;
+                    break;
+                } else {
+                    row++;
+                }
+            }
+
+            // Calculating y position by adding height of one cell
+            while (y > top) {
+                top += mCellVerticalPadding + (int) mCellHeight;
+                if (col == sizeY) {
+                    col = -1;
+                    break;
+                } else {
+                    col++;
+                }
+            }
+
+            field = mFields.getField(row, col);
+        }
+
+        return field;
     }
 
     /**
@@ -228,7 +276,7 @@ public class GameFieldView extends View {
             mOnStepListener.onStep();
         }
     }
-    
+
     public void dispatchFoxFound() {
         if (mOnStepListener != null) {
             mOnStepListener.onFoxFound();
@@ -251,6 +299,7 @@ public class GameFieldView extends View {
      */
     public interface OnStepListener {
         public void onStep();
+
         public void onFoxFound();
     }
 
