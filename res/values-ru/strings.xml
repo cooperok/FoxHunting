@@ -2,12 +2,15 @@
 <resources>
 
     <string name="app_name">Охота на лис</string>
-    
-    <!--  Кнопки -->
+
+    <!-- Кнопки -->
     <string name="button_new">Новая игра</string>
     <string name="button_records">Рекорды</string>
     <string name="button_settings">Настройки</string>
     <string name="button_about">Об игре</string>
     
+    <!--  -->
+    <string name="foxes_count">Отсалось лисов:</string>
+    <string name="steps_count">Количество шагов:</string>
 
 </resources>

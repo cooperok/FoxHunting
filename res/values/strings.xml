@@ -11,4 +11,8 @@
     <string name="records_title">Records</string>
     
 
+    <!-- Game -->
+    <string name="foxes_count">Foxes left:</string>
+    <string name="steps_count">Steps:</string>
+
 </resources>
