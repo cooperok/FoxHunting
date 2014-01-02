@@ -11,27 +11,28 @@
         android:paddingRight="@dimen/game_score_layout_padding_horizontal" >
 
         <TextView
+            android:id="@+id/steps_count_text"
+            style="@style/game_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/steps_count" />
+
+        <TextView
             android:id="@+id/steps_count"
             style="@style/game_text_numbers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/steps_margin" />
-
-        <TextView
-            style="@style/game_text_numbers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/steps_count"
-            android:text="@string/steps_count" />
+            android:layout_below="@id/steps_count_text"
+            android:paddingRight="@dimen/steps_count_padding" />
 
         <TextView
             android:id="@+id/foxes_count_text"
-            style="@style/game_text_numbers"
+            style="@style/game_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginRight="@dimen/foxes_margin"
             android:text="@string/foxes_count" />
 
         <TextView
@@ -39,7 +40,9 @@
             style="@style/game_text_numbers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/foxes_count_text" />
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/foxes_count_text"
+            android:layout_marginLeft="@dimen/foxes_count_padding" />
     </RelativeLayout>
 
     <ua.cooperok.foxhunting.gui.views.GameFieldView

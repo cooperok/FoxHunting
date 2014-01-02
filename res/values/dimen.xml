@@ -13,5 +13,11 @@
     
     <dimen name="game_field_value_text_size">18sp</dimen>
     
+    <dimen name="steps_margin">5dp</dimen>
+    <dimen name="foxes_margin">5dp</dimen>
+    
+    <dimen name="foxes_count_padding">20dp</dimen>
+    <dimen name="steps_count_padding">20dp</dimen>
+    
 
 </resources>

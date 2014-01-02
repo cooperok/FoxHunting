@@ -1,6 +1,8 @@
 package ua.cooperok.foxhunting.gui.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,6 +28,8 @@ public class GameFieldView extends View {
     private Paint mTouchedCellColor;
     private Paint mCellColorWithFox;
     private Paint mCellTextValueColor;
+
+    private Bitmap mFoxImage;
 
     private FieldsCollection mFields;
 
@@ -61,11 +65,12 @@ public class GameFieldView extends View {
         mTouchedCellColor = new Paint();
         mTouchedCellColor.setColor(Color.DKGRAY);
         mCellColorWithFox = new Paint();
-        mCellColorWithFox.setColor(Color.YELLOW);
+        mCellColorWithFox.setColor(Color.WHITE);
         mCellTextValueColor = new Paint();
         mCellTextValueColor.setColor(Color.BLACK);
         mCellVerticalPadding = getResources().getDimensionPixelOffset(R.dimen.game_field_cell_vertical_padding);
         mCellHorizontalPadding = getResources().getDimensionPixelOffset(R.dimen.game_field_cell_horizontal_padding);
+        mFoxImage = BitmapFactory.decodeResource(getResources(), R.drawable.fox);
     }
 
     public void initGameField() {
@@ -124,6 +129,9 @@ public class GameFieldView extends View {
                                         cellTop + mCellHeight,
                                         mCellColorWithFox
                               );
+
+                        drawFox(canvas, cellLeft, cellTop);
+
                     } else {
                         canvas.drawRect(
                                         cellLeft,
@@ -168,6 +176,16 @@ public class GameFieldView extends View {
                             mTouchedCellColor
                   );
         }
+    }
+
+    private void drawFox(Canvas canvas, float left, float top) {
+
+        canvas.drawBitmap(
+                          Bitmap.createScaledBitmap(mFoxImage, (int) mCellWidth, (int) mCellHeight, false),
+                          left,
+                          top,
+                          null
+              );
     }
 
     @Override

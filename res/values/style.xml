@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <style name="game_text">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="game_text_numbers">
         <item name="android:textSize">21sp</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

@@ -38,7 +38,7 @@ public class GameActivity extends Activity {
         mGameStepsListener = new GameStepListener();
         mGameView.setOnStepListener(mGameStepsListener);
 
-        //If activity was just created
+        // If activity was just created
         if (savedInstanceState == null) {
             mGameView.initGameField();
             mFoxesCount = mGameView.getFoxesCount();
@@ -54,6 +54,10 @@ public class GameActivity extends Activity {
 
     private void setFoxesCount() {
         mFoxesCountView.setText(String.valueOf(mFoxesCount));
+    }
+
+    private void onGameEnd() {
+
     }
 
     @Override
@@ -86,6 +90,9 @@ public class GameActivity extends Activity {
         public void onFoxFound() {
             --mFoxesCount;
             setFoxesCount();
+            if (mFoxesCount == 0) {
+                onGameEnd();
+            }
         }
     }
 

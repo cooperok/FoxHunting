@@ -9,5 +9,9 @@
     <string name="button_settings">Налаштування</string>
     <string name="button_about">Про гру</string>
     
+    <!--  -->
+    <string name="foxes_count">Залишилось лисиць:</string>
+    <string name="steps_count">Кількість кроків:</string>
+    
 
 </resources>
