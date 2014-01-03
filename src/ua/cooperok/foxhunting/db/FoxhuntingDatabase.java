@@ -1,7 +1,5 @@
 package ua.cooperok.foxhunting.db;
 
-import java.util.Date;
-
 import ua.cooperok.foxhunting.game.Record;
 import android.content.ContentValues;
 import android.content.Context;
@@ -26,7 +24,8 @@ public class FoxhuntingDatabase {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(RECORDS_TABLE_NAME);
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
-        return qb.query(db, null, null, null, null, null, "created ASC");
+        return qb.query(db, null, null, null, null, null,
+                        RecordsColumns.CREATED + " ASC, " + RecordsColumns.STEPS + " ASC");
     }
 
     public Record insertRecord(int steps, String username) {
@@ -37,7 +36,7 @@ public class FoxhuntingDatabase {
         values.put(RecordsColumns.STEPS, steps);
         values.put(RecordsColumns.USERNAME, username);
         values.put(RecordsColumns.CREATED, now);
-        
+
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
 
         //

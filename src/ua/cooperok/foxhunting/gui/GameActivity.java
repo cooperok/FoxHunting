@@ -69,7 +69,6 @@ public class GameActivity extends Activity {
 
         // Starting records activity
         Intent intent = new Intent(this, RecordsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 

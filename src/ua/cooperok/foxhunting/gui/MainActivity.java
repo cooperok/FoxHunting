@@ -33,6 +33,7 @@ public class MainActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
         case R.id.button_new:
             Intent intent = new Intent(this, GameActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
             break;
 
