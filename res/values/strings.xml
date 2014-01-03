@@ -14,5 +14,8 @@
     <!-- Game -->
     <string name="foxes_count">Foxes left:</string>
     <string name="steps_count">Steps:</string>
+    
+    <!--  -->
+    <string name="user_name_dialog_title">Input user name</string>
 
 </resources>

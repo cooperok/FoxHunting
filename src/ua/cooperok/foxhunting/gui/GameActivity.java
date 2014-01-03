@@ -1,13 +1,18 @@
 package ua.cooperok.foxhunting.gui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+
 import ua.cooperok.foxhunting.R;
+import ua.cooperok.foxhunting.db.FoxhuntingDatabase;
 import ua.cooperok.foxhunting.gui.views.GameFieldView;
 import ua.cooperok.foxhunting.gui.views.GameFieldView.OnStepListener;
 
 public class GameActivity extends Activity {
+
+    private final static String DEFAULT_USER_NAME = "username";
 
     /**
      * Keys uses in {@link GameActivity#onSaveInstanceState(Bundle)} and
@@ -57,7 +62,15 @@ public class GameActivity extends Activity {
     }
 
     private void onGameEnd() {
+        // Saving record to database
+        FoxhuntingDatabase db = new FoxhuntingDatabase(this);
+        // @TODO user name must be in settings
+        db.insertRecord(mStepsCount, DEFAULT_USER_NAME);
 
+        // Starting records activity
+        Intent intent = new Intent(this, RecordsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
 
     @Override

@@ -12,5 +12,8 @@
     <!--  -->
     <string name="foxes_count">Отсалось лисов:</string>
     <string name="steps_count">Количество шагов:</string>
+    
+    <!--  -->
+    <string name="user_name_dialog_title">Введите имя пользователя</string>
 
 </resources>

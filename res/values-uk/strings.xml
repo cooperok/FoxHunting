@@ -2,16 +2,18 @@
 <resources>
 
     <string name="app_name">Полювання на лисиць</string>
-    
-    <!--  Кнопки -->
+
+    <!-- Кнопки -->
     <string name="button_new">Нова гра</string>
     <string name="button_records">Рекорди</string>
     <string name="button_settings">Налаштування</string>
     <string name="button_about">Про гру</string>
-    
+
     <!--  -->
     <string name="foxes_count">Залишилось лисиць:</string>
     <string name="steps_count">Кількість кроків:</string>
     
+   	<!--  -->
+    <string name="user_name_dialog_title">Введіть ім’я</string>
 
 </resources>
