@@ -12,72 +12,50 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 public class FoxhuntingDatabase {
 
-	public static final String DATABASE_NAME = "foxhunting";
-    
+    public static final String DATABASE_NAME = "foxhunting";
+
     public static final String RECORDS_TABLE_NAME = "records";
-	
-    private DatabaseHelper databaseHelper;
-    
+
+    private DatabaseHelper mDatabaseHelper;
+
     public FoxhuntingDatabase(Context context) {
-    	
-    	databaseHelper = new DatabaseHelper(context);
-    	
+        mDatabaseHelper = new DatabaseHelper(context);
     }
-    
+
     public Cursor getRecords() {
-    	
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
         qb.setTables(RECORDS_TABLE_NAME);
-        
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        
+        SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
         return qb.query(db, null, null, null, null, null, "created ASC");
-
     }
 
     public Record insertRecord(int steps, String username) {
+        long rowId;
+        long now = System.currentTimeMillis();
 
-    	long rowId;
-        
-        String created = "";
-    	
         ContentValues values = new ContentValues();
-        
         values.put(RecordsColumns.STEPS, steps);
-        
         values.put(RecordsColumns.USERNAME, username);
+        values.put(RecordsColumns.CREATED, now);
         
-        Date now = new Date(System.currentTimeMillis());
-        
-        values.put(RecordsColumns.CREATED, now.toString());
-        
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
 
+        //
         rowId = db.insert(RECORDS_TABLE_NAME, RecordsColumns.ID, values);
-
         Record record;
-        
         if (rowId > 0) {
-        	
-            record = new Record(rowId, steps, created);
-        	
+            record = new Record(rowId, steps, now);
         } else {
-        	
-        	throw new SQLException("Failed to insert record");
-        	
+            throw new SQLException("Failed to insert record");
         }
-        
         return record;
-        
     }
-    
+
     public void deleteFolder(long recordID) {
-    	
-    	SQLiteDatabase db = databaseHelper.getWritableDatabase();
-    	
-    	// delete the record
-    	db.delete(RECORDS_TABLE_NAME, RecordsColumns.ID + "=" + recordID, null);
+        SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
+
+        // delete the record
+        db.delete(RECORDS_TABLE_NAME, RecordsColumns.ID + "=" + recordID, null);
     }
-    
+
 }
