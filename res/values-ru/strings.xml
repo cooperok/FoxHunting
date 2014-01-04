@@ -14,6 +14,9 @@
     <string name="steps_count">Количество шагов:</string>
     
     <!--  -->
+    <string name="game_completed_dialog_title">Игра окончена</string>
+    <string name="game_completed_dialog_text">Лисы найдены за %1$d попыт%2$s</string>
     <string name="user_name_dialog_title">Введите имя пользователя</string>
+    
 
 </resources>

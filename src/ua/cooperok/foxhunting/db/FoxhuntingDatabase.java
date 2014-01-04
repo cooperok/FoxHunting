@@ -20,12 +20,14 @@ public class FoxhuntingDatabase {
         mDatabaseHelper = new DatabaseHelper(context);
     }
 
-    public Cursor getRecords() {
+    public Cursor getRecords(int limit) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(RECORDS_TABLE_NAME);
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
         return qb.query(db, null, null, null, null, null,
-                        RecordsColumns.CREATED + " ASC, " + RecordsColumns.STEPS + " ASC");
+                        RecordsColumns.STEPS + " ASC, " + RecordsColumns.CREATED + " ASC",
+                        String.valueOf(limit)
+                 );
     }
 
     public Record insertRecord(int steps, String username) {
@@ -41,6 +43,7 @@ public class FoxhuntingDatabase {
 
         //
         rowId = db.insert(RECORDS_TABLE_NAME, RecordsColumns.ID, values);
+        db.close();
         Record record;
         if (rowId > 0) {
             record = new Record(rowId, steps, now);
@@ -50,11 +53,12 @@ public class FoxhuntingDatabase {
         return record;
     }
 
-    public void deleteFolder(long recordID) {
+    public void deleteRecord(long recordID) {
         SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
 
         // delete the record
         db.delete(RECORDS_TABLE_NAME, RecordsColumns.ID + "=" + recordID, null);
+        db.close();
     }
 
 }

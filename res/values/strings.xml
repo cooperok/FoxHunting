@@ -16,6 +16,8 @@
     <string name="steps_count">Steps:</string>
     
     <!--  -->
+    <string name="game_completed_dialog_title">Game completed</string>
+    <string name="game_completed_dialog_text">Foxes founded in %1$d steps</string>
     <string name="user_name_dialog_title">Input user name</string>
 
 </resources>

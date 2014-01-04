@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
 import ua.cooperok.foxhunting.R;
 import ua.cooperok.foxhunting.gui.GameActivity;
 import ua.cooperok.foxhunting.gui.RecordsActivity;

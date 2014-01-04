@@ -1,6 +1,10 @@
 package ua.cooperok.foxhunting.gui;
 
+import java.util.Locale;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -9,6 +13,7 @@ import ua.cooperok.foxhunting.R;
 import ua.cooperok.foxhunting.db.FoxhuntingDatabase;
 import ua.cooperok.foxhunting.gui.views.GameFieldView;
 import ua.cooperok.foxhunting.gui.views.GameFieldView.OnStepListener;
+import ua.cooperok.foxhunting.helpers.Morphology;
 
 public class GameActivity extends Activity {
 
@@ -67,9 +72,39 @@ public class GameActivity extends Activity {
         // @TODO user name must be in settings
         db.insertRecord(mStepsCount, DEFAULT_USER_NAME);
 
-        // Starting records activity
-        Intent intent = new Intent(this, RecordsActivity.class);
-        startActivity(intent);
+        showDialog();
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        String title = getString(R.string.game_completed_dialog_title);
+        alert.setTitle(title);
+
+        String textRes = getString(R.string.game_completed_dialog_text);
+        String text;
+        String country = Locale.getDefault().getCountry();
+        if (country.equalsIgnoreCase("ru")) {
+            text = String.format(textRes, mStepsCount, Morphology.getWordEndingByNumber(mStepsCount, "ку", "ки", "ок"));
+        } else if (country.equalsIgnoreCase("uk")) {
+            text = String.format(textRes, mStepsCount, Morphology.getWordEndingByNumber(mStepsCount, "у", "и", ""));
+        } else {
+            text = String.format(textRes, mStepsCount);
+        }
+        
+        final TextView textView = new TextView(this);
+        textView.setPadding(10, 10, 10, 10);
+        textView.setText(text);
+        alert.setView(textView);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                // Starting records activity
+                Intent intent = new Intent(GameActivity.this, RecordsActivity.class);
+                startActivity(intent);
+            }
+        });
+        alert.show();
     }
 
     @Override

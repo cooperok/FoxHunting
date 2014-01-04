@@ -12,8 +12,10 @@
     <!--  -->
     <string name="foxes_count">Залишилось лисиць:</string>
     <string name="steps_count">Кількість кроків:</string>
-    
-   	<!--  -->
+
+    <!--  -->
+    <string name="game_completed_dialog_title">Гра завершена</string>
+    <string name="game_completed_dialog_text">Всі лисиці знайдені за %1$d спроб%2$s</string>
     <string name="user_name_dialog_title">Введіть ім’я</string>
 
 </resources>

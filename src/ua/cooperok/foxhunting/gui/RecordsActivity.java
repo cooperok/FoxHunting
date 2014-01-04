@@ -13,6 +13,8 @@ import android.widget.ListView;
 
 public class RecordsActivity extends ListActivity {
 
+    private static final int RECORDS_LIMIT = 10;
+
     private FoxhuntingDatabase mDbAdapter;
 
     private Cursor mRecordsCursor;
@@ -32,7 +34,7 @@ public class RecordsActivity extends ListActivity {
     }
 
     private Cursor getRecords() {
-        return mDbAdapter.getRecords();
+        return mDbAdapter.getRecords(RECORDS_LIMIT);
     }
 
     private ArrayList<String> getRecordsArrayList() {
@@ -40,9 +42,9 @@ public class RecordsActivity extends ListActivity {
         if (mRecordsCursor.moveToFirst()) {
             do {
                 recordsList.add(
-                            mRecordsCursor.getString(mRecordsCursor.getColumnIndex(RecordsColumns.USERNAME))
-                                    + " / " + mRecordsCursor.getInt(mRecordsCursor.getColumnIndex(RecordsColumns.STEPS))
-                            );
+                           mRecordsCursor.getString(mRecordsCursor.getColumnIndex(RecordsColumns.USERNAME))
+                                   + " / " + mRecordsCursor.getInt(mRecordsCursor.getColumnIndex(RecordsColumns.STEPS))
+                           );
             } while (mRecordsCursor.moveToNext());
         }
 
